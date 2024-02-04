@@ -1,10 +1,3 @@
-!pip install Unidecode
-!pip install autocorrect
-!pip install contractions
-!pip install -U spacy==2.3.7
-!pip install PyMuPDF
-!pip install pandas_profiling
-!pip install --upgrade typing-extensions
 #Import necessary libraries
 import pandas as pd
 import numpy as np
