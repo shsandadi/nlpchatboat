@@ -107,7 +107,8 @@ def main():
             "Critical Risk": critical_risk_input,
             "Description": description_input
         }
-        response = process_user_input(collected_data, nlp_model)
+        #response = process_user_input(collected_data, nlp_model)
+        response=response+'Hello World'
         st.text_area("Chatbot Response:", value=response, height=100, max_chars=500, key="chat_response", disabled=True)
 
 def process_user_input(user_input, model):
