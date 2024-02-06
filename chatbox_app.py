@@ -94,7 +94,7 @@ def main():
     employee_third_party_input = st.text_input("Employee or Third Party:")
     critical_risk_input = st.text_input("Critical Risk:")
     description_input = st.text_area("Description:", height=100)
-
+    response=''
     if st.button("Submit"):
         collected_data = {
             "Data": data_input,
