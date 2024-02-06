@@ -3,3 +3,13 @@ streamlit
 tensorflow==2.15.0
 numpy
 matplotlib
+nltk
+wordcloud
+requests
+scikit-learn
+seaborn
+unidecode
+autocorrect
+spacy
+beautifulsoup4
+gensim
