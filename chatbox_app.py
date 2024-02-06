@@ -110,7 +110,7 @@ def main():
         }
         #response = process_user_input(collected_data, nlp_model)
         i=i+1
-        response='Hello World'+i
+        response='Hello World'+str(i)
         st.text_area("Chatbot Response:", value=response, height=100, max_chars=500, key="chat_response", disabled=True)
 
 def process_user_input(user_input, model):
