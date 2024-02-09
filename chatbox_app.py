@@ -75,7 +75,24 @@ def load_model():
     with open(model_path, 'rb') as file:
         model = pickle.load(file)
     return model
-
+@st.cache_data
+def extractGlove(url):
+    response = requests.get(url)
+    response.raise_for_status()
+    zip_file = zipfile.ZipFile(io.BytesIO(response.content))
+    zip_file.extractall('.') 
+@st.cache_data
+def embedded_words():
+     embeddings_index = {}
+     EMBEDDING_FILE = './glove.6B.200d.txt'
+     f = open(EMBEDDING_FILE)
+     for line in tqdm(f):
+      values = line.split()
+      word = values[0]
+      coefs = np.asarray(values[1:], dtype='float32')
+      embeddings_index[word] = coefs
+     f.close()
+     return embeddings_index
 def main():
     st.set_page_config(page_title="NLP Chatbox for Accident", page_icon="🚑", layout="centered")
     st.title("NLP Chatbot for Accident")
@@ -84,7 +101,9 @@ def main():
     tf_version = tf.__version__
     st.sidebar.header(f"This is chatbot of Group 6 to predict the accident level")
     st.sidebar.markdown("This is a simple NLP chatbot for handling accident-related queries.")
-
+    url = 'https://nlp.stanford.edu/data/glove.6B.zip'
+    extractGlove(url)
+    embedded_words()
     # User inputs for each column
     data_input = st.text_input("Data:")
     countries_input = st.text_input("Countries:")
@@ -111,12 +130,10 @@ def main():
         response = process_user_input(collected_data, nlp_model)
         st.text_area("Chatbot Response:", value=response, height=100, max_chars=500, key="chat_response", disabled=True)
 
+
 def process_user_input(user_input, model):
     url = 'https://nlp.stanford.edu/data/glove.6B.zip'
-    response = requests.get(url)
-    response.raise_for_status()
-    zip_file = zipfile.ZipFile(io.BytesIO(response.content))
-    zip_file.extractall('.') 
+    extractGlove(url)
     df = pd.DataFrame([user_input])
     df['Date'] = pd.to_datetime(df['Data']).dt.date
     df.rename(columns={'Countries':'Country', 'Genre':'Gender','Employee or Third Party' :'Employee Type'}, inplace=True)
@@ -139,15 +156,7 @@ def process_user_input(user_input, model):
     df['nb_words'] = df['Cleaned_Description'].apply(lambda x: len(x.split(' ')))
     df['Employee type'] = df['Employee Type'].str.replace(' ', '_')
     df['Critical Risk'] = df['Critical Risk'].str.replace('\n', '').str.replace(' ', '_')
-    embeddings_index = {}
-    EMBEDDING_FILE = './glove.6B.200d.txt'
-    f = open(EMBEDDING_FILE)
-    for line in tqdm(f):
-     values = line.split()
-     word = values[0]
-     coefs = np.asarray(values[1:], dtype='float32')
-     embeddings_index[word] = coefs
-    f.close()
+    embeddings_index = embedded_words()
     ind_featenc_df = pd.DataFrame()
     df['Season'] = df['Season'].replace('Summer', 'aSummer').replace('Autumn', 'bAutumn').replace('Winter', 'cWinter').replace('Spring', 'dSpring')
     ind_featenc_df['Season'] = LabelEncoder().fit_transform(df['Season']).astype(np.int8)
