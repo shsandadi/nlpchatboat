@@ -67,6 +67,7 @@ from tqdm import tqdm
 import requests, zipfile, io
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import StandardScaler
+import unicodedata
 
 
 def load_model():
@@ -77,12 +78,12 @@ def load_model():
 
 def main():
     st.set_page_config(page_title="NLP Chatbox for Accident", page_icon="🚑", layout="centered")
-    st.title("NLP Chatbox for Accident")
+    st.title("NLP Chatbot for Accident")
     st.markdown('<style>h1{color: #336699;}</style>', unsafe_allow_html=True)
     nlp_model = load_model()
     tf_version = tf.__version__
     st.sidebar.header(f"This is chatbot of Group 6 to predict the accident level")
-    st.sidebar.markdown("This is a simple NLP chatbox for handling accident-related queries.")
+    st.sidebar.markdown("This is a simple NLP chatbot for handling accident-related queries.")
 
     # User inputs for each column
     data_input = st.text_input("Data:")
@@ -94,8 +95,7 @@ def main():
     employee_third_party_input = st.text_input("Employee or Third Party:")
     critical_risk_input = st.text_input("Critical Risk:")
     description_input = st.text_area("Description:", height=100)
-    response=''
-    i=0
+
     if st.button("Submit"):
         collected_data = {
             "Data": data_input,
@@ -108,9 +108,7 @@ def main():
             "Critical Risk": critical_risk_input,
             "Description": description_input
         }
-        #response = process_user_input(collected_data, nlp_model)
-        i=i+1
-        response='Hello World'+str(i)
+        response = process_user_input(collected_data, nlp_model)
         st.text_area("Chatbot Response:", value=response, height=100, max_chars=500, key="chat_response", disabled=True)
 
 def process_user_input(user_input, model):
@@ -174,8 +172,12 @@ def process_user_input(user_input, model):
     ind_feat_df = ind_featenc_df.join(pd.DataFrame(ind_glove_df).iloc[:,0:30].reset_index(drop=True))
     scaler_X = StandardScaler()
     ind_tfidf_df.iloc[:,:6] = scaler_X.fit_transform(ind_tfidf_df.iloc[:,:6])
-    model.predict(ind_tfidf_df)
-    return f"Received input: {ind_feat_df.shape}"
+    text_samples = 'observing pulp overflow overflow reception drawer thickener filter operator approach verify operation pump making sure stopped press keypad start pump getting start proceeds remove guard manipulates motor pump transmission strip left hand imprisoned pulley motor transmission belt'  # Replace with your actual text samples
+    #categorical_samples =ind_feat_df.values[:len(text_samples)]
+    result = predict_text_and_categorical(text_samples, ind_tfidf_df,model)
+    #model.predict([ind_tfidf_df,ind_tfidf_df])
+    #return f"Received input: [0.7049883  0.10264347 0.08182887 0.0828189  0.02772051]"
+    return f"Received input: {result[0]}"
 
 def monthToseasons(x):
     if x in [9, 10, 11]:
@@ -229,6 +231,50 @@ def sent2vec(s):
     if type(v) != np.ndarray:
         return np.zeros(300)
     return v / np.sqrt((v ** 2).sum())
+    
+def des_cleaning(text):
+
+    # Initialize the object for Lemmatizer class
+    lemmatizer = nltk.stem.WordNetLemmatizer()
+
+    # Set the stopwords to English
+    stopwords = nltk.corpus.stopwords.words('english')
+
+    # Normalize the text in order deal with accented words and unicodes
+    text = (unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8', 'ignore').lower())
+
+    # Consider only alphabets and numbers from the text
+    words = re.sub(r'[^a-zA-Z.,!?/:;\"\'\s]', '', text).split()
+
+    # Consider the words which are not in stopwords of english and lemmatize them
+    lemmatizer = nltk.stem.WordNetLemmatizer()
+    lems = [lemmatizer.lemmatize(i) for i in words if i not in stopwords]
+
+    # #remove non-alphabetical characters like '(', '.' or '!'
+    # alphas = [i for i in lems if (i.isalpha() or i.isnumeric()) and (i not in stopwords)]
+
+    words = [w for w in lems if len(w)>2]
+
+    return words
+    
+def predict_text_and_categorical(text_samples, categorical_samples, model):
+    # Preprocess text data
+    text_data = [" ".join(des_cleaning(text)) for text in text_samples]
+    tokenizer = Tokenizer(num_words=10000)
+    x = tokenizer.texts_to_sequences(text_data)
+    input_1_data = pad_sequences(x, maxlen=100)
+    
+    # Preprocess categorical data
+    input_2_data = np.array(categorical_samples)
+    original_data = categorical_samples.iloc[0].values  # Extract the row as a NumPy array
+    length = len(text_samples)
+    replicated_data = np.tile(original_data, (length, 1))
+    expanded_data = np.zeros((length, 85))
+    expanded_data[:, :30] = replicated_data
+    expanded_df = pd.DataFrame(expanded_data)
+    predictions = model.predict([input_1_data,expanded_df])
+    print(predictions[0])
+    return predictions
 
 
 if __name__ == "__main__":
