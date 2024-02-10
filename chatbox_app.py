@@ -329,4 +329,12 @@ def predict_text_and_categorical(text_samples, categorical_samples, model):
 
 
 if __name__ == "__main__":
+    st.markdown("""
+    <style>
+        body {
+            background-color: blue;
+            color: white;
+        }
+    </style>
+    """, unsafe_allow_html=True)
     main()
