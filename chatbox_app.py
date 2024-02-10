@@ -116,7 +116,8 @@ def main():
     #potential_accident_level_input = st.text_input("Potential Accident Level:")
     genre_input=st.selectbox("Genre:", ('Male', 'Female'))
     #genre_input = st.text_input("Genre:")
-    employee_third_party_input = st.text_input("Employee or Third Party:")
+    employee_third_party_input=st.selectbox("Employee or Third Party:", ('Third Party', 'Employee'))
+    #employee_third_party_input = st.text_input("Employee or Third Party:")
     critical_risk_input = st.text_input("Critical Risk:")
     description_input = st.text_area("Description:", height=100)
 
