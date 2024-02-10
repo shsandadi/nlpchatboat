@@ -94,13 +94,13 @@ def embedded_words():
      f.close()
      return embeddings_index
 def main():
-    st.set_page_config(page_title="NLP Chatbox for Accident", page_icon="🚑", layout="centered")
-    st.title("NLP Chatbot for Accident")
+    st.set_page_config(page_title="BotCrafters - Saving Lives", page_icon="🚑", layout="centered")
+    st.title("BotCrafters - Saving Lives")
     st.markdown('<style>h1{color: #336699;}</style>', unsafe_allow_html=True)
     nlp_model = load_model()
     tf_version = tf.__version__
-    st.sidebar.header(f"This is chatbot of Group 6 to predict the accident level")
-    st.sidebar.markdown("This is a simple NLP chatbot for handling accident-related queries.")
+    #st.sidebar.header(f"This is chatbot of Group 6 to predict the accident level")
+    st.sidebar.header("BotCrafters attemp to share better insights analyzing records of 12 different plants in 3 different countries for accidents and help organizations in saving lives")
     url = 'https://nlp.stanford.edu/data/glove.6B.zip'
     extractGlove(url)
     embedded_words()
@@ -152,6 +152,7 @@ def process_user_input(user_input, model):
     df['WeekofYear'] = df.Date.apply(lambda x : x.weekofyear)
     df['Season'] = df['Month'].apply(monthToseasons)
     stop_words = set(stopwords.words('english'))
+    text_samples=df['Description']
     df['Cleaned_Description'] = df['Description'].apply(lambda x : x.lower())
     df['Cleaned_Description'] = df['Cleaned_Description'].apply(lambda x : replace_words(x))
     df['Cleaned_Description'] = df['Cleaned_Description'].apply(lambda x: remove_punctuation(x))
@@ -187,7 +188,7 @@ def process_user_input(user_input, model):
     ind_feat_df = ind_featenc_df.join(pd.DataFrame(ind_glove_df).iloc[:,0:30].reset_index(drop=True))
     scaler_X = StandardScaler()
     ind_tfidf_df.iloc[:,:6] = scaler_X.fit_transform(ind_tfidf_df.iloc[:,:6])
-    text_samples = 'observing pulp overflow overflow reception drawer thickener filter operator approach verify operation pump making sure stopped press keypad start pump getting start proceeds remove guard manipulates motor pump transmission strip left hand imprisoned pulley motor transmission belt'  # Replace with your actual text samples
+    #text_samples = 'observing pulp overflow overflow reception drawer thickener filter operator approach verify operation pump making sure stopped press keypad start pump getting start proceeds remove guard manipulates motor pump transmission strip left hand imprisoned pulley motor transmission belt'  # Replace with your actual text samples
     #categorical_samples =ind_feat_df.values[:len(text_samples)]
     result = predict_text_and_categorical(text_samples, ind_tfidf_df,model)
     #model.predict([ind_tfidf_df,ind_tfidf_df])
