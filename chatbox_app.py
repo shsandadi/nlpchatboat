@@ -96,8 +96,8 @@ def embedded_words():
 def main():
     st.set_page_config(page_title="BotCrafters - Saving Lives", page_icon="🚑", layout="centered")
     #st.title("BotCrafters - Saving Lives")
-    st.markdown('<div style="text-align: left; padding-left: 10px; color: blue;">'
-            '<h1>BotCrafters - Saving Lives</h1>'
+    st.markdown('<div style="text-align: center; padding-left: 10px;">'
+            '<h1 style="color: blue;>BotCrafters - Saving Lives</h1>'
             '</div>', 
             unsafe_allow_html=True)
 
