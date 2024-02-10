@@ -113,7 +113,7 @@ def main():
     #local_input = st.text_input("Local:")
     #industry_sector_input = st.text_input("Industry Sector:")
     industry_sector_input=st.selectbox("Industry Sector:", ('Mining', 'Metals', 'Others'))
-    potential_accident_level_input=st.selectbox("Potential Accident Level:", ('I', 'II', 'III','IV','V','VI'))
+    #potential_accident_level_input=st.selectbox("Potential Accident Level:", ('I', 'II', 'III','IV','V','VI'))
     #potential_accident_level_input = st.text_input("Potential Accident Level:")
     genre_input=st.selectbox("Genre:", ('Male', 'Female'))
     #genre_input = st.text_input("Genre:")
@@ -128,7 +128,7 @@ def main():
             "Countries": countries_input,
             "Local": local_input,
             "Industry Sector": industry_sector_input,
-            "Potential Accident Level": potential_accident_level_input,
+            #"Potential Accident Level": potential_accident_level_input,
             "Genre": genre_input,
             "Employee or Third Party": employee_third_party_input,
             "Critical Risk": critical_risk_input,
@@ -170,7 +170,7 @@ def process_user_input(user_input, model):
     ind_featenc_df['Season'] = LabelEncoder().fit_transform(df['Season']).astype(np.int8)
     df['Weekday'] = df['Weekday'].replace('Monday', 'aMonday').replace('Tuesday', 'bTuesday').replace('Wednesday', 'cWednesday').replace('Thursday', 'dThursday').replace('Friday', 'eFriday').replace('Saturday', 'fSaturday').replace('Sunday', 'gSunday')
     ind_featenc_df['Weekday'] = LabelEncoder().fit_transform(df['Weekday']).astype(np.int8)
-    ind_featenc_df['Potential Accident Level'] = LabelEncoder().fit_transform(df['Potential Accident Level']).astype(np.int8)
+    #ind_featenc_df['Potential Accident Level'] = LabelEncoder().fit_transform(df['Potential Accident Level']).astype(np.int8)
     Country_dummies = pd.get_dummies(df['Country'], columns=["Country"], drop_first=True)
     Local_dummies = pd.get_dummies(df['Local'], columns=["Local"], drop_first=True)
     Gender_dummies = pd.get_dummies(df['Gender'], columns=["Gender"], drop_first=True)
@@ -195,7 +195,7 @@ def process_user_input(user_input, model):
     #model.predict([ind_tfidf_df,ind_tfidf_df])
     #return f"Received input: [0.7049883  0.10264347 0.08182887 0.0828189  0.02772051]"
     # Sample array
-    #print(result[0])
+    print(result)
     #accidental_levels = result[0].strip('[]').split()
 
     # Find index of maximum value
@@ -207,7 +207,7 @@ def process_user_input(user_input, model):
 
     # Print Accidental Level
     #print(f"Accidental Level is {accidental_level}")
-    return result
+    return f"Received input: {result[0]}"
 
 
     #return f"Accidental Level is {accidental_level}"
