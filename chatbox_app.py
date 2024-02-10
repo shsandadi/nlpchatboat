@@ -196,6 +196,21 @@ def process_user_input(user_input, model):
     #return f"Received input: [0.7049883  0.10264347 0.08182887 0.0828189  0.02772051]"
     # Sample array
     print(result)
+    accidental_levels_str = np.array2string(result, separator=' ')
+    accidental_levels = accidental_levels_str.strip('[]').split()
+    accidental_levels = [float(value) for value in accidental_levels]
+    if accidental_levels:
+        # Find index of maximum value
+        max_index = accidental_levels.index(max(accidental_levels))
+
+        # Map index to Accidental Level
+        accidental_level_mapping = {0: 'I', 1: 'II', 2: 'III', 3: 'IV', 4: 'V'}
+        accidental_level = accidental_level_mapping[max_index]
+
+        # Print Accidental Level
+        print(f"Accidental Level is {accidental_level}")
+    else:
+        print("List is empty. No Accidental Level to determine.")
     #accidental_levels = result[0].strip('[]').split()
 
     # Find index of maximum value
