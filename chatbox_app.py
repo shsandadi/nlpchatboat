@@ -100,8 +100,10 @@ def main():
     nlp_model = load_model()
     tf_version = tf.__version__
     #st.sidebar.header(f"This is chatbot of Group 6 to predict the accident level")
-    st.sidebar.header("BotCrafters attemp to share better insights analyzing records of 12 different plants in 3 different countries for accidents and help organizations in saving lives")
-    st.markdown('<style>h1{color: #336699;}</style>', unsafe_allow_html=True)
+    st.sidebar.markdown('<div style="text-align: left; padding-left: 10px;">'
+                    '<h3>BotCrafters attempt to share better insights analyzing records of 12 different plants in 3 different countries for accidents and help organizations in saving lives</h3>'
+                    '</div>',
+                    unsafe_allow_html=True)
     url = 'https://nlp.stanford.edu/data/glove.6B.zip'
     extractGlove(url)
     embedded_words()
