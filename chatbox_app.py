@@ -195,6 +195,7 @@ def process_user_input(user_input, model):
     #model.predict([ind_tfidf_df,ind_tfidf_df])
     #return f"Received input: [0.7049883  0.10264347 0.08182887 0.0828189  0.02772051]"
     # Sample array
+    print(result[0])
     accidental_levels = result[0].strip('[]').split()
 
     # Find index of maximum value
