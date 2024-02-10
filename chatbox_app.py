@@ -96,7 +96,15 @@ def embedded_words():
 def main():
     st.set_page_config(page_title="BotCrafters - Saving Lives", page_icon="🚑", layout="centered")
     st.title("BotCrafters - Saving Lives")
-    st.markdown('<style>h1{color: #336699;}</style>', unsafe_allow_html=True)
+    st.markdown("""
+    <style>
+        body {
+            background-color: blue;
+            color: white;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+    #st.markdown('<style>h1{color: #336699;}</style>', unsafe_allow_html=True)
     nlp_model = load_model()
     tf_version = tf.__version__
     #st.sidebar.header(f"This is chatbot of Group 6 to predict the accident level")
@@ -329,12 +337,4 @@ def predict_text_and_categorical(text_samples, categorical_samples, model):
 
 
 if __name__ == "__main__":
-    st.markdown("""
-    <style>
-        body {
-            background-color: blue;
-            color: white;
-        }
-    </style>
-    """, unsafe_allow_html=True)
     main()
