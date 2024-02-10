@@ -96,15 +96,9 @@ def embedded_words():
 def main():
     st.set_page_config(page_title="BotCrafters - Saving Lives", page_icon="🚑", layout="centered")
     st.title("BotCrafters - Saving Lives")
-    st.markdown("""
-    <style>
-        body {
-            background-color: blue;
-            color: white;
-        }
-    </style>
-    """, unsafe_allow_html=True)
-    #st.markdown('<style>h1{color: #336699;}</style>', unsafe_allow_html=True)
+    st.markdown('<div style="text-align: left; padding-left: 10px;">'
+                    '<h1>{color:blue;}BotCrafters - Saving Lives</h1>'
+                    '</div>', unsafe_allow_html=True)
     nlp_model = load_model()
     tf_version = tf.__version__
     #st.sidebar.header(f"This is chatbot of Group 6 to predict the accident level")
