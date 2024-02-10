@@ -195,21 +195,22 @@ def process_user_input(user_input, model):
     #model.predict([ind_tfidf_df,ind_tfidf_df])
     #return f"Received input: [0.7049883  0.10264347 0.08182887 0.0828189  0.02772051]"
     # Sample array
-    print(result[0])
-    accidental_levels = result[0].strip('[]').split()
+    #print(result[0])
+    #accidental_levels = result[0].strip('[]').split()
 
     # Find index of maximum value
-    max_index = accidental_levels.index(max(accidental_levels))
+    #max_index = accidental_levels.index(max(accidental_levels))
 
     # Map index to Accidental Level
-    accidental_level_mapping = {0: 'I', 1: 'II', 2: 'III', 3: 'IV', 4: 'V'}
-    accidental_level = accidental_level_mapping[max_index]
+    #accidental_level_mapping = {0: 'I', 1: 'II', 2: 'III', 3: 'IV', 4: 'V'}
+    #accidental_level = accidental_level_mapping[max_index]
 
     # Print Accidental Level
-    print(f"Accidental Level is {accidental_level}")
+    #print(f"Accidental Level is {accidental_level}")
+    return result
 
 
-    return f"Accidental Level is {accidental_level}"
+    #return f"Accidental Level is {accidental_level}"
 
 def monthToseasons(x):
     if x in [9, 10, 11]:
