@@ -222,10 +222,10 @@ def process_user_input(user_input, model):
 
     # Print Accidental Level
     #print(f"Accidental Level is {accidental_level}")
-    return f"Received input: {result[0]}"
+    #return f"Received input: {result[0]}"
 
 
-    #return f"Accidental Level is {accidental_level}"
+    return f"Accidental Level is {accidental_level}"
 
 def monthToseasons(x):
     if x in [9, 10, 11]:
